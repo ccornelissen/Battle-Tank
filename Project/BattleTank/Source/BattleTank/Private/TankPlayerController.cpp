@@ -3,10 +3,6 @@
 #include "BattleTank.h"
 #include "TankPlayerController.h"
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
 
 void ATankPlayerController::BeginPlay()
 {
@@ -20,5 +16,11 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Controlled tank returning null"))
 	}
-	
+
+}
+
+
+ATank* ATankPlayerController::GetControlledTank() const
+{
+	return Cast<ATank>(GetPawn());
 }
