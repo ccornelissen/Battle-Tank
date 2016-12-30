@@ -24,5 +24,16 @@ public:
 private:
 	//Start the tank moving the barrel so that projectile will fly towards the cross hair
 	void AimTowardsCrosshair();
+
+	//Returns the location of the ray cast if true
+	bool GetSightRayHitLocation(FVector& Vector) const;
+
+	//Returns the look direction based off of the screen space location if true
+	bool GetLookDirection(FVector& LookVector) const;
+
+	UPROPERTY(EditAnywhere)
+	float fCrossHairXLocation = 0.5f, fCrossHairYLocation = 0.33333f;
 	
+	UPROPERTY(EditAnywhere)
+	float fLineTraceRange = 1000000.0f;
 };

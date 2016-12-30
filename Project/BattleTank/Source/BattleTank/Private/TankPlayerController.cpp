@@ -23,21 +23,68 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UE_LOG(LogTemp, Warning, TEXT("%s is ticking!"), *GetControlledTank()->GetName());
 	//Aim towards crosshair
+	AimTowardsCrosshair();
+
 }
 
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (GetControlledTank == nullptr)
+	//Return if there is no controlled tank to aim
+	if (GetControlledTank() == nullptr)
 	{
 		return;
 	}
 
-	//Get world locations through line trace
-	// If it hits the landscape
-		//Tell controlled tank to aim towards cross hair.
+	FVector HitLocation; //Out parameter
+	if (GetSightRayHitLocation(HitLocation)) //Casting a ray trace at the hit location
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
+		// If it hits the landscape
+			//Tell controlled tank to aim towards cross hair.
+	}
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector) const
+{
+	FVector LookDir;
+
+	if (GetLookDirection(LookDir))
+	{
+		//Setting up line trace parameters 
+		FHitResult TraceHit;
+		FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
+		FVector StartLocation = PlayerCameraManager->GetCameraLocation();
+		FVector TraceDistance = StartLocation + LookDir * fLineTraceRange;
+
+		GetWorld()->LineTraceSingleByChannel(TraceHit, StartLocation, TraceDistance, ECollisionChannel::ECC_Visibility, TraceParams);
+
+		if (TraceHit.bBlockingHit)
+		{
+			Vector = TraceHit.Location;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector& LookDirection) const
+{
+	int32 iViewportSizeX, iViewportSizeY;
+	GetViewportSize(iViewportSizeX, iViewportSizeY);
+
+	FVector2D ScreenLocation = FVector2D(iViewportSizeX * fCrossHairXLocation, iViewportSizeY * fCrossHairYLocation);
+
+	FVector CameraLoc;
+
+	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLoc, LookDirection))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 
