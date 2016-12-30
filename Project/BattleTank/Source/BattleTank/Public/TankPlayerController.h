@@ -19,5 +19,10 @@ public:
 	ATank* GetControlledTank() const;
 	
 	void BeginPlay() override;
+	void Tick(float DeltaSeconds) override;
+
+private:
+	//Start the tank moving the barrel so that projectile will fly towards the cross hair
+	void AimTowardsCrosshair();
 	
 };
