@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -17,7 +18,24 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
 {
+	if (Barrel == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Barrel to set on Aiming Component"));
+		return;
+	}
+
 	TankBarrel = Barrel;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret* Turret)
+{
+	if (Turret == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Turret to set on Aiming Component"));
+		return;
+	}
+
+	TankTurret = Turret;
 }
 
 // Called when the game starts
@@ -49,9 +67,8 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 	{
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
 
-		FVector BarrelLocation = TankBarrel->GetComponentLocation();
-
 		MoveBarrel(AimDirection);
+		MoveTurret(AimDirection);
 	}
 	
 }
@@ -66,5 +83,15 @@ void UTankAimingComponent::MoveBarrel(FVector AimAt)
 
 	//Move tankbarrel to face the direction.
 	TankBarrel->ElevateBarrel(RotationDifference.Pitch);
+}
 
+void UTankAimingComponent::MoveTurret(FVector AimAt)
+{
+	FRotator TurretRotation = TankTurret->GetForwardVector().Rotation();
+	FRotator AimAtRotator = AimAt.Rotation();
+
+	FRotator RotationDifference = AimAtRotator - TurretRotation;
+
+	//Move the turret
+	TankTurret->MoveTurret(RotationDifference.Yaw);
 }

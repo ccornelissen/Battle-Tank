@@ -7,6 +7,7 @@
 
 //Forward declaration
 class UTankBarrel;
+class UTankTurret;
 
 //Holds tank barrels properties
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -19,6 +20,7 @@ public:
 	UTankAimingComponent();
 
 	void SetBarrelReference(UTankBarrel* Barrel);
+	void SetTurretReference(UTankTurret* Turret);
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -31,7 +33,12 @@ public:
 private:
 	UTankBarrel* TankBarrel = nullptr;
 
+	UTankTurret* TankTurret = nullptr;
+
 	//Moving the barrel to aim at the reticle
 	void MoveBarrel(FVector AimAt);
+
+	//Rotating the turret to face the same direction the player is looking
+	void MoveTurret(FVector AimAt);
 	
 };
