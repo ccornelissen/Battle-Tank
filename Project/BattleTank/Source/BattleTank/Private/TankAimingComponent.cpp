@@ -1,7 +1,9 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
+
 
 
 // Sets default values for this component's properties
@@ -11,13 +13,9 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
-
-
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* Barrel)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
 {
 	TankBarrel = Barrel;
 }
@@ -26,18 +24,12 @@ void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* Barrel)
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
-
 
 // Called every frame
 void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
 }
 
 void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
@@ -50,26 +42,34 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 	FVector LaunchVelocity;
 	FVector StartLocation = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
 
+	//Get the aim direction
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, LaunchVelocity, StartLocation, HitLocation, fFireVelocity, ESuggestProjVelocityTraceOption::DoNotTrace);
 	//Calculate the out launch velocity 
-	if (UGameplayStatics::SuggestProjectileVelocity 	//Get the aim direction
-		(
-			this,
-			LaunchVelocity,
-			StartLocation,
-			HitLocation,
-			fFireVelocity,
-			false,
-			0.0f,
-			0.0f,
-			ESuggestProjVelocityTraceOption::DoNotTrace
-			)
-		)
+	if (bHaveAimSolution)
 	{
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
 
 		FVector BarrelLocation = TankBarrel->GetComponentLocation();
 
+		MoveBarrel(AimDirection);
+
 		UE_LOG(LogTemp, Warning, TEXT("%s is the aimdirection"), *AimDirection.ToString());
 	}
 	
+}
+
+void UTankAimingComponent::MoveBarrel(FVector AimAt)
+{
+	//Calculate where the barrel has to move based on target.
+	FRotator BarrelRotation = TankBarrel->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimAt.Rotation();
+
+	FRotator RotationDifference = AimAsRotator - BarrelRotation;
+
+	float fBarrelMoveSpeed = TankBarrel->fMaxDegreesPerSecond;
+
+	//Move tankbarrel to face the direction.
+	TankBarrel->ElevateBarrel(fBarrelMoveSpeed);
+
+
 }

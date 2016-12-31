@@ -1,8 +1,8 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "Tank.h"
-
 
 // Sets default values
 ATank::ATank()
@@ -14,7 +14,7 @@ ATank::ATank()
 
 }
 
-void ATank::SetBarrelReference(UStaticMeshComponent* Barrel)
+void ATank::SetBarrelReference(UTankBarrel* Barrel)
 {
 	TankAimingComponent->SetBarrelReference(Barrel);
 }

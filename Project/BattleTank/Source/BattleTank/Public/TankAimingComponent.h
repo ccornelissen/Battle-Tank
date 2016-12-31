@@ -5,7 +5,10 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+//Forward declaration
+class UTankBarrel;
 
+//Holds tank barrels properties
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -15,7 +18,7 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void SetBarrelReference(UStaticMeshComponent* Barrel);
+	void SetBarrelReference(UTankBarrel* Barrel);
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -26,7 +29,9 @@ public:
 	void AimingAt(FVector HitLocation, float fFireVelocity);
 
 private:
-	UStaticMeshComponent* TankBarrel = nullptr;
-		
+	UTankBarrel* TankBarrel = nullptr;
+
+	//Moving the barrel to aim at the reticle
+	void MoveBarrel(FVector AimAt);
 	
 };
