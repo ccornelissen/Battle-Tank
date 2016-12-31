@@ -17,9 +17,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float fMaxDegreesPerSecond = 20.0f;
-	float fLastKnownMoveSpeed;
-	
-	
-	
-	
+
+	float fLastMoveSpeed = 0;
 };

@@ -86,10 +86,10 @@ void UTankAimingComponent::MoveBarrel(FVector AimAt)
 void UTankAimingComponent::MoveTurret(FVector AimAt)
 {
 	FRotator TurretRotation = TankTurret->GetForwardVector().Rotation();
-	FRotator AimAtRotator = AimAt.Rotation();
+	FRotator AimAtRotation = AimAt.Rotation();
 
-	FRotator RotationDifference = AimAtRotator - TurretRotation;
+	FVector RotationDifference = AimAtRotation.Euler() - TurretRotation.Euler();
 
 	//Move the turret
-	TankTurret->MoveTurret(RotationDifference.Yaw);
+	TankTurret->MoveTurret(RotationDifference.Z);
 }
