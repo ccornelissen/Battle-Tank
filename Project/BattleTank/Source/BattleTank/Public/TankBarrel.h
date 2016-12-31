@@ -17,14 +17,14 @@ public:
 	void ElevateBarrel(float DegreesPerSecond);
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float fMaxDegreesPerSecond = 20.0f;
+	float fMaxDegreesPerSecond = 5.0f;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float fMaxHeight = 40.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float fMinHeight = -40.0f;
+	float fMinHeight = -20.0f;
 	
 	
 };

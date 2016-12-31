@@ -1,6 +1,7 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 
@@ -56,9 +57,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector) const
 		FVector StartLocation = PlayerCameraManager->GetCameraLocation();
 		FVector TraceDistance = StartLocation + LookDir * fLineTraceRange;
 
-		GetWorld()->LineTraceSingleByChannel(TraceHit, StartLocation, TraceDistance, ECollisionChannel::ECC_Visibility, TraceParams);
-
-		if (TraceHit.bBlockingHit)
+		if (GetWorld()->LineTraceSingleByChannel(TraceHit, StartLocation, TraceDistance, ECollisionChannel::ECC_Visibility, TraceParams))
 		{
 			Vector = TraceHit.Location;
 			return true;
