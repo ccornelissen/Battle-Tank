@@ -9,28 +9,21 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetControlledTank() != nullptr)
+	if (GetControlledTank() == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is being controlled by AI."), *GetControlledTank()->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Controlled tank returning null"))
+		UE_LOG(LogTemp, Warning, TEXT("%s Controlled tank returning null"), *GetPawn()->GetName())
 	}
 
-	if (GetPlayerTank() != nullptr)
+	if (GetPlayerTank() == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Found the player: %s"), *GetPlayerTank()->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Couldn't find the player."))
+		UE_LOG(LogTemp, Warning, TEXT("%s Couldn't find the player."), *GetPawn()->GetName())
 	}
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (GetPlayerTank() != nullptr)
 	{
 		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());

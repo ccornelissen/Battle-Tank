@@ -24,9 +24,6 @@ public:
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	void AimingAt(FVector HitLocation, float fFireVelocity);
 
@@ -34,6 +31,9 @@ private:
 	UTankBarrel* TankBarrel = nullptr;
 
 	UTankTurret* TankTurret = nullptr;
+
+	//Hold the direction we want to move the barrel and turret.
+	FVector AimDirection;
 
 	//Moving the barrel to aim at the reticle
 	void MoveBarrel(FVector AimAt);

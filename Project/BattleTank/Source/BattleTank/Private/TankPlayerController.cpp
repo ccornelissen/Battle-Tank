@@ -45,7 +45,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	}
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector) const
+bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector)
 {
 	FVector LookDir;
 

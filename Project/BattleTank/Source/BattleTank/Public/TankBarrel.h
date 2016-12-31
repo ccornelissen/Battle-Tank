@@ -17,7 +17,7 @@ public:
 	void ElevateBarrel(float DegreesPerSecond);
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float fMaxDegreesPerSecond = 5.0f;
+	float fMaxDegreesPerSecond = 10.0f;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Setup")

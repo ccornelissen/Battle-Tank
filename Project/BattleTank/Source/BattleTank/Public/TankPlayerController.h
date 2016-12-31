@@ -28,7 +28,7 @@ private:
 	void AimTowardsCrosshair();
 
 	//Returns the location of the ray cast if true
-	bool GetSightRayHitLocation(FVector& Vector) const;
+	bool GetSightRayHitLocation(FVector& Vector);
 
 	//Returns the look direction based off of the screen space location if true
 	bool GetLookDirection(FVector& LookVector) const;
