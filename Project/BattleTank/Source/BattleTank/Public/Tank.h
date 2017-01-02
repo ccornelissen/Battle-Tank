@@ -48,6 +48,7 @@ private:
 
 	UTankBarrel* TankBarrel = nullptr;
 
-	
-	
+	UPROPERTY(EditAnywhere)
+	float fTankReloadTimer = 3.0f;
+	double dLastFireTime = 0.0;
 };
