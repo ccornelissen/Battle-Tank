@@ -29,7 +29,7 @@ void  ATank::SetTurretReference(UTankTurret* Turret)
 
 void ATank::Fire()
 {
-	bool bIsReloaded = (FPlatformTime::Seconds() - dLastFireTime) > fTankReloadTimer;
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
 
 
 	if (TankBarrel != nullptr && bIsReloaded)
@@ -44,7 +44,7 @@ void ATank::Fire()
 			CurProjectile->LaunchProjectile(fLaunchSpeed);
 		}
 
-		dLastFireTime = FPlatformTime::Seconds();
+		fLastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }
 

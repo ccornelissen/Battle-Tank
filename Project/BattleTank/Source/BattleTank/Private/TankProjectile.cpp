@@ -25,7 +25,6 @@ void ATankProjectile::BeginPlay()
 void ATankProjectile::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
 }
 
 void ATankProjectile::LaunchProjectile(float fFireSpeed)
