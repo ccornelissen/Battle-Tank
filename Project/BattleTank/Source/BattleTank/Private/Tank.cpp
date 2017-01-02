@@ -29,11 +29,23 @@ void  ATank::SetTurretReference(UTankTurret* Turret)
 
 void ATank::Fire()
 {
+	if (TankBarrel == nullptr)
+	{
+		return;
+	}
 	
 	FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
 	FRotator SpawnRot = TankBarrel->GetSocketRotation(FName("ProjectileLocation"));
 
-	GetWorld()->SpawnActor<ATankProjectile>(ProjectileBlueprint, SpawnLoc, SpawnRot);
+	if (ProjectileBlueprint == nullptr)
+	{
+		return;
+	}
+
+	ATankProjectile* CurProjectile = GetWorld()->SpawnActor<ATankProjectile>(ProjectileBlueprint, SpawnLoc, SpawnRot);
+
+	CurProjectile->LaunchProjectile(fLaunchSpeed);
+
 }
 
 // Called when the game starts or when spawned
