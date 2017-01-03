@@ -15,7 +15,7 @@ class BATTLETANK_API UTankTurret : public UStaticMeshComponent
 public:
 	void MoveTurret(float fMoveDirection);
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float fMaxDegreesPerSecond = 20.0f;
 
 	float fLastMoveSpeed = 0;

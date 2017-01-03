@@ -1,0 +1,27 @@
+// Property of Cody Cornelissen.
+
+#include "BattleTank.h"
+#include "TankTrack.h"
+#include "TankMovementComponent.h"
+
+void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
+{
+	if (!LeftTrackToSet || !RightTrackToSet)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Tracks returning null on the Tank Movement Component"));
+		return;
+	}
+
+	LeftTrack = LeftTrackToSet;
+	RightTrack = RightTrackToSet;
+}
+
+void UTankMovementComponent::IntendMoveForward(float Speed)
+{
+	LeftTrack->MoveTrack(Speed);
+	RightTrack->MoveTrack(Speed);
+
+	//TODO prevent doubling of speed due to dual controls.
+}
+
+
