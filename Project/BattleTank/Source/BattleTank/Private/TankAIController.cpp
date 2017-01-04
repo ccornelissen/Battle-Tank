@@ -19,6 +19,8 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerTank != nullptr && ControlledTank != nullptr)
 	{
+		MoveToActor(PlayerTank, fAIFightRadius); 
+
 		//Aim towards the player
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 

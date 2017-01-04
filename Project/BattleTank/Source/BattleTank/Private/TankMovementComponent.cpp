@@ -18,8 +18,26 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::IntendMoveForward(float Speed)
 {
+	if (!LeftTrack || !RightTrack)
+	{
+		return;
+	}
+
 	LeftTrack->MoveTrack(Speed);
 	RightTrack->MoveTrack(Speed);
+
+	//TODO prevent doubling of speed due to dual controls.
+}
+
+void UTankMovementComponent::IntendRotate(float Speed)
+{
+	if (!LeftTrack || !RightTrack)
+	{
+		return;
+	}
+
+	LeftTrack->MoveTrack(Speed);
+	RightTrack->MoveTrack(-Speed);
 
 	//TODO prevent doubling of speed due to dual controls.
 }
