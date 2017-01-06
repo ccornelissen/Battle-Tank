@@ -18,7 +18,7 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Log log log"));
+	UE_LOG(LogTemp, Warning, TEXT("%s moving towards %s"), *GetOwner()->GetName(), *MoveVelocity.ToString());
 }
 
 void UTankMovementComponent::IntendMoveForward(float Speed)
