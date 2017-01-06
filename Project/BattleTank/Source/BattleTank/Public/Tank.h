@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Tank)
 	void Fire();
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float fLaunchSpeed = 4500.0f;
+
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
@@ -40,9 +43,6 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float fLaunchSpeed = 4500.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float fTankReloadTimer = 3.0f;

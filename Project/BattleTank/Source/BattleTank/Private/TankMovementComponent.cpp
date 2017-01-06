@@ -16,6 +16,11 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 	RightTrack = RightTrackToSet;
 }
 
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Log log log"));
+}
+
 void UTankMovementComponent::IntendMoveForward(float Speed)
 {
 	if (!LeftTrack || !RightTrack)

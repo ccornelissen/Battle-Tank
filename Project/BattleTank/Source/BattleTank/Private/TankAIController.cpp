@@ -8,6 +8,13 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ControlledTank = Cast<ATank>(GetPawn());
+
+	if (ControlledTank == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s, does not have a Controlled Tank"), *GetPawn()->GetName());
+	}
 }
 
 void ATankAIController::Tick(float DeltaTime)
@@ -15,11 +22,10 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	ATank* PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	ATank* ControlledTank = Cast<ATank>(GetPawn());
-
+	
 	if (PlayerTank != nullptr && ControlledTank != nullptr)
 	{
-		MoveToActor(PlayerTank, fAIFightRadius); 
+		MoveToActor(PlayerTank, fAIFightRadius);
 
 		//Aim towards the player
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
@@ -28,4 +34,6 @@ void ATankAIController::Tick(float DeltaTime)
 		ControlledTank->Fire();
 	}
 }
+
+
 

@@ -25,12 +25,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Tank)
 	void IntendRotate(float Speed);
 
+	/** path following: request new velocity */
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float fMoveForwardForce = 450000.0f;
-	
-
 };

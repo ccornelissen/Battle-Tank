@@ -22,11 +22,11 @@ private:
 	void Tick(float DeltaSeconds) override;
 
 	//The closest distance the AI tank will bring itself to the player.
-	UPROPERTY(EditDefaultsOnly, Category = AI Variables)
+	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
 	float fAIFightRadius = -15.0f;
 
 	//The distance before the AI starts to engage the target
-	UPROPERTY(EditDefaultsOnly, Category = AI Variables)
-	float fAIEngageRadius = 60.0f;
-
+	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
+	float fAIEngageRadius = 6.0f;
+	ATank* ControlledTank = nullptr;
 };
