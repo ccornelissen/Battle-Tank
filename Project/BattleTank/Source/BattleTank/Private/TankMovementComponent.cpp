@@ -32,7 +32,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	IntendMoveForward(fForward);
 
 	//Getting the cross product to find the tanks "perpandicularity"
-	FVector TankCross = FVector::CrossProduct(AINormalVector, TankForward);
+	FVector TankCross = FVector::CrossProduct(TankForward, AINormalVector);
 
 	//Rotate based on the Z
 	IntendRotate(TankCross.Z);

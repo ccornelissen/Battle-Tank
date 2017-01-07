@@ -7,7 +7,7 @@
 
 class UTankTrack;
 /**
- * Responsible for driving the tank tracks
+ * Drives the tanks using references to the tanks tracks
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
@@ -16,22 +16,28 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category = SetUp)
+	//Function that sets the tank tracks
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Tank)
+	//Function that pushes the tank forward
+	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void IntendMoveForward(float Speed);
 
-	UFUNCTION(BlueprintCallable, Category = Tank)
+	//Function that rotates that tank
+	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void IntendRotate(float Speed);
-
-	/** path following: request new velocity */
-	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+	
 
 private:
+	//Function used to move the AI tank using the players movement controls, override unreals base RequestDirectMove in UNavMovementComponent
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
+	//References to the tank tracks
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	//Tanks forward force
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float fMoveForwardForce = 450000.0f;
 };

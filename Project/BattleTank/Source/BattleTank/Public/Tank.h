@@ -19,19 +19,27 @@ class BATTLETANK_API ATank : public APawn
 public:
 	void AimAt(FVector HitLocation);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	//Used to set tanks barrel reference
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelReference(UTankBarrel* Barrel);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	//Used to set tanks turret referernce
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetTurretReference(UTankTurret* Turret);
 
-	UFUNCTION(BlueprintCallable, Category = Tank)
+	//Firest the tank
+	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void Fire();
+
+	//Variable used to set and update reloading UI
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	float GetReloadTracker() const;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float fLaunchSpeed = 4500.0f;
 
 protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Tank Part")
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
@@ -44,15 +52,14 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	//Float that handles how often the tank can shoot
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float fTankReloadTimer = 3.0f;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<ATankProjectile> ProjectileBlueprint;
 
 	UTankBarrel* TankBarrel = nullptr;
-
-	
 
 	float fLastFireTime = 0.0;
 };
