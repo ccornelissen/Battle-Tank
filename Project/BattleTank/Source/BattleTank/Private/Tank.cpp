@@ -12,19 +12,36 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
-void ATank::SetBarrelReference(UTankBarrel* Barrel)
+void ATank::Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComponent* AimComponent)
 {
-	TankBarrel = Barrel;
-	TankAimingComponent->SetBarrelReference(Barrel);
-}
+	if (Barrel != nullptr)
+	{
+		TankBarrel = Barrel;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No reference to the tank barrel on the tank blueprint"));
+	}
 
-void  ATank::SetTurretReference(UTankTurret* Turret)
-{
-	TankAimingComponent->SetTurretReference(Turret);
+	if (Turret != nullptr)
+	{
+		TankTurret = Turret;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No reference to the tank turret on the tank blueprint"));
+	}
+
+	if (AimComponent != nullptr)
+	{
+		TankAimingComponent = AimComponent;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No reference to the tank aiming component on the tank blueprint"));
+	}
 }
 
 void ATank::Fire()

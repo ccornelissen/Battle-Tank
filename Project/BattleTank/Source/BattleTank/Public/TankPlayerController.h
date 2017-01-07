@@ -33,9 +33,9 @@ private:
 	//Returns the look direction based off of the screen space location if true
 	bool GetLookDirection(FVector& LookVector) const;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float fCrossHairXLocation = 0.5f, fCrossHairYLocation = 0.33333f;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float fLineTraceRange = 1000000.0f;
 };

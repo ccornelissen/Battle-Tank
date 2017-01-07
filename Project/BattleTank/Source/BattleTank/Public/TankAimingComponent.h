@@ -9,6 +9,13 @@
 class UTankBarrel;
 class UTankTurret;
 
+UENUM(BlueprintType)
+enum class EReticleState : uint8
+{
+	RS_Aiming UMETA(DisplayName = "Aiming"), //When the tank is aiming at something that is not an enemy
+	RS_Locked UMETA(DisplayName = "Locked") //When the tank is aiming at an enemy
+};
+
 //Holds tank barrels properties
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
@@ -19,13 +26,19 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void SetBarrelReference(UTankBarrel* Barrel);
-	void SetTurretReference(UTankTurret* Turret);
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	void AimingAt(FVector HitLocation, float fFireVelocity);
+
+	void SetAimingState(FHitResult Hit);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EReticleState ReticleState = EReticleState::RS_Aiming;
 
 private:
 	UTankBarrel* TankBarrel = nullptr;

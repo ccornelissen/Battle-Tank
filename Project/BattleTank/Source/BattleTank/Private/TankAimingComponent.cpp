@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Tank.h"
 #include "TankAimingComponent.h"
 
 
@@ -12,11 +13,10 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = false;
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
+void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 {
 	if (Barrel == nullptr)
 	{
@@ -25,10 +25,7 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
 	}
 
 	TankBarrel = Barrel;
-}
 
-void UTankAimingComponent::SetTurretReference(UTankTurret* Turret)
-{
 	if (Turret == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Turret to set on Aiming Component"));
@@ -69,6 +66,28 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 
 	MoveBarrel(AimDirection);
 	MoveTurret(AimDirection);
+}
+
+void UTankAimingComponent::SetAimingState(FHitResult Hit)
+{
+	if (Hit.Actor != nullptr)
+	{
+		ATank* Tank = Cast<ATank>(Hit.GetActor());
+
+		if (Tank != nullptr)
+		{
+			ReticleState = EReticleState::RS_Locked;
+		}
+		else
+		{
+			ReticleState = EReticleState::RS_Aiming;
+		}
+	}
+	else
+	{
+		ReticleState = EReticleState::RS_Aiming;
+	}
+
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimAt)

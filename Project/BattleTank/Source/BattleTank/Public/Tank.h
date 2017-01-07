@@ -19,13 +19,12 @@ class BATTLETANK_API ATank : public APawn
 public:
 	void AimAt(FVector HitLocation);
 
-	//Used to set tanks barrel reference
+	//Function to set all tank references, called in blueprint
 	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetBarrelReference(UTankBarrel* Barrel);
+	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComponent* AimComponent);
 
-	//Used to set tanks turret referernce
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetTurretReference(UTankTurret* Turret);
+	UPROPERTY(BlueprintReadOnly, Category = "Tank Part")
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 	//Firest the tank
 	UFUNCTION(BlueprintCallable, Category = "Tank")
@@ -37,10 +36,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float fLaunchSpeed = 4500.0f;
-
-protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Tank Part")
-	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
@@ -56,10 +51,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float fTankReloadTimer = 3.0f;
 
+	//Reference to the tanks fired projectile setup in the blueprint
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<ATankProjectile> ProjectileBlueprint;
 
+	//Pointer references to tank components
+	UTankTurret* TankTurret = nullptr;
 	UTankBarrel* TankBarrel = nullptr;
 
+	//Float to track the last time the tank fired
 	float fLastFireTime = 0.0;
 };
