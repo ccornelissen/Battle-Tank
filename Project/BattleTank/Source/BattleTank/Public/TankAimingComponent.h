@@ -53,8 +53,9 @@ protected:
 	EReticleState ReticleState = EReticleState::RS_Aiming;
 
 private:
-	UTankBarrel* TankBarrel = nullptr;
 
+	//Reference to tank parts this class controls the movement of
+	UTankBarrel* TankBarrel = nullptr;
 	UTankTurret* TankTurret = nullptr;
 
 	//Hold the direction we want to move the barrel and turret.

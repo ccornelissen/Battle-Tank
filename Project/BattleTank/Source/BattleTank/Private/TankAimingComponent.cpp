@@ -3,7 +3,6 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-#include "Tank.h"
 #include "TankProjectile.h"
 #include "TankAimingComponent.h"
 
@@ -42,6 +41,7 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
+//Function to find where the user is aiming, gets the vector that is used to control turret and barrel
 void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 {
 	if (!ensure(TankBarrel))
@@ -101,7 +101,7 @@ void UTankAimingComponent::SetAimingState(FHitResult Hit)
 {
 	if (Hit.Actor != nullptr)
 	{
-		ATank* Tank = Cast<ATank>(Hit.GetActor());
+		APawn* Tank = Cast<APawn>(Hit.GetActor());
 
 		if (Tank != nullptr)
 		{

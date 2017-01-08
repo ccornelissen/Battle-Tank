@@ -5,7 +5,6 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-class ATank;
 class UTankAimingComponent;
 
 /**
@@ -29,8 +28,6 @@ private:
 	//The distance before the AI starts to engage the target
 	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
 	float fAIEngageRadius = 12000.0f;
-
-	ATank* ControlledTank = nullptr;
 
 	UTankAimingComponent* AimingComponent = nullptr;
 };

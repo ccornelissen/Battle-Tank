@@ -1,7 +1,6 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.h"
 
@@ -10,14 +9,12 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ControlledTank = Cast<ATank>(GetPawn());
-
-	if (!ensure(ControlledTank))
+	if (!ensure(GetPawn()))
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s, does not have a Controlled Tank"), *GetPawn()->GetName());
 	}
 
-	AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 
 	if (!ensure(AimingComponent))
 	{
@@ -30,9 +27,9 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	ATank* PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	APawn* PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	
-	if (PlayerTank != nullptr && ControlledTank != nullptr)
+	if (ensure(PlayerTank))
 	{
 		MoveToActor(PlayerTank, fAIFightRadius);
 

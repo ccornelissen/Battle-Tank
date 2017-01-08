@@ -1,7 +1,6 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -10,11 +9,11 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ensure(GetControlledTank()))
+	if (ensure(GetPawn()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is set"), *GetControlledTank()->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("%s is set"), *GetPawn()->GetName());
 
-		AimComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+		AimComp = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 
 		if (ensure(AimComp))
 		{
@@ -102,10 +101,4 @@ bool ATankPlayerController::GetLookDirection(FVector& LookDirection) const
 	}
 
 	return false;
-}
-
-
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
 }
