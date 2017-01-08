@@ -7,6 +7,7 @@
 #include "TankPlayerController.generated.h"
 
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -22,6 +23,11 @@ public:
 	
 	void BeginPlay() override;
 	void Tick(float DeltaSeconds) override;
+
+protected:
+	//Function that tells the UI when it is safe to set its components
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
 
 private:
 	//Start the tank moving the barrel so that projectile will fly towards the cross hair

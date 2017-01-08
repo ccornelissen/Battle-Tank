@@ -23,6 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComponent* AimComponent);
 
+	//Reference to the tanks aiming component
 	UPROPERTY(BlueprintReadOnly, Category = "Tank Part")
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
@@ -34,7 +35,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	float GetReloadTracker() const;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	//Tank's forward launch force, used to propel the tank
+	UPROPERTY(EditAnywhere, Category = "Firing")
 	float fLaunchSpeed = 4500.0f;
 
 private:
@@ -52,7 +54,7 @@ private:
 	float fTankReloadTimer = 3.0f;
 
 	//Reference to the tanks fired projectile setup in the blueprint
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<ATankProjectile> ProjectileBlueprint;
 
 	//Pointer references to tank components

@@ -6,7 +6,7 @@
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
 {
-	if (!LeftTrackToSet || !RightTrackToSet) //null check
+	if (!ensure(LeftTrackToSet || !RightTrackToSet)) //null check
 	{
 		UE_LOG(LogTemp, Error, TEXT("Tracks returning null on the Tank Movement Component"));
 		return;
@@ -40,7 +40,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 
 void UTankMovementComponent::IntendMoveForward(float Speed)
 {
-	if (!LeftTrack || !RightTrack)
+	if (!ensure(LeftTrack || !RightTrack))
 	{
 		return;
 	}
@@ -54,7 +54,7 @@ void UTankMovementComponent::IntendMoveForward(float Speed)
 
 void UTankMovementComponent::IntendRotate(float Speed)
 {
-	if (!LeftTrack || !RightTrack)
+	if (!ensure(LeftTrack || !RightTrack))
 	{
 		return;
 	}

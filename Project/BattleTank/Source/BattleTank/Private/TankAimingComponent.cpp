@@ -18,7 +18,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 {
-	if (Barrel == nullptr)
+	if (!ensure(Barrel))
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Barrel to set on Aiming Component"));
 		return;
@@ -26,7 +26,7 @@ void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 
 	TankBarrel = Barrel;
 
-	if (Turret == nullptr)
+	if (!ensure(Turret))
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Turret to set on Aiming Component"));
 		return;
@@ -43,7 +43,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 {
-	if (TankBarrel == nullptr)
+	if (!ensure(TankBarrel))
 	{
 		return;
 	}

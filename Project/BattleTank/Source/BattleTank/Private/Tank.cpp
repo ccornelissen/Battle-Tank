@@ -16,7 +16,7 @@ ATank::ATank()
 
 void ATank::Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComponent* AimComponent)
 {
-	if (Barrel != nullptr)
+	if (ensure(Barrel))
 	{
 		TankBarrel = Barrel;
 	}
@@ -25,7 +25,7 @@ void ATank::Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComp
 		UE_LOG(LogTemp, Error, TEXT("No reference to the tank barrel on the tank blueprint"));
 	}
 
-	if (Turret != nullptr)
+	if (ensure(Turret))
 	{
 		TankTurret = Turret;
 	}
@@ -34,7 +34,7 @@ void ATank::Initialize(UTankBarrel* Barrel, UTankTurret* Turret, UTankAimingComp
 		UE_LOG(LogTemp, Error, TEXT("No reference to the tank turret on the tank blueprint"));
 	}
 
-	if (AimComponent != nullptr)
+	if (ensure(AimComponent))
 	{
 		TankAimingComponent = AimComponent;
 	}
@@ -48,12 +48,12 @@ void ATank::Fire()
 {
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
 
-	if (TankBarrel != nullptr && bIsReloaded)
+	if (ensure(TankBarrel) && bIsReloaded)
 	{
 		FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
 		FRotator SpawnRot = TankBarrel->GetSocketRotation(FName("ProjectileLocation"));
 
-		if (ProjectileBlueprint != nullptr)
+		if (ensure(ProjectileBlueprint))
 		{
 			ATankProjectile* CurProjectile = GetWorld()->SpawnActor<ATankProjectile>(ProjectileBlueprint, SpawnLoc, SpawnRot);
 
@@ -86,6 +86,10 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 //Sets the turret to aim at the hit location
 void ATank::AimAt(FVector HitLocation)
 {
+	if (!ensure(TankAimingComponent))
+	{
+		return;
+	}
 	//Passing the hit location and tank launch spped to the tank aiming component for firing the projectile
 	TankAimingComponent->AimingAt(HitLocation, fLaunchSpeed);
 }
