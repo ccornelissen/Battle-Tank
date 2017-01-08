@@ -9,8 +9,9 @@
 class UTankAimingComponent;
 
 /**
- * 
+ *  Controls the players interactions with the tank and aiming component
  */
+
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
 {

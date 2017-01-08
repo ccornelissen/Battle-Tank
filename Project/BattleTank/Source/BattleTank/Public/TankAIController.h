@@ -8,8 +8,9 @@
 class UTankAimingComponent;
 
 /**
- * 
+ *  Controls how the AI interacts with the tank and aiming component
  */
+
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
