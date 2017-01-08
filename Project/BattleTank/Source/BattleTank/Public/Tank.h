@@ -47,7 +47,7 @@ private:
 	virtual void BeginPlay() override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComp) override;
 
 	//Float that handles how often the tank can shoot
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
