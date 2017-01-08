@@ -5,18 +5,10 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankBarrel;
-class UTankAimingComponent;
-class UTankTurret;
-class ATankProjectile;
-class UTankMovementComponent;
-
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
-
-public:
 
 private:
 	// Sets default values for this pawn's properties

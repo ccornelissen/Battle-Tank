@@ -6,6 +6,7 @@
 #include "TankMovementComponent.generated.h"
 
 class UTankTrack;
+
 /**
  * Drives the tanks using references to the tanks tracks
  */

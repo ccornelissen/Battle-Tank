@@ -1,10 +1,6 @@
 // Property of Cody Cornelissen.
 
 #include "BattleTank.h"
-#include "TankBarrel.h"
-#include "TankAimingComponent.h"
-#include "TankProjectile.h"
-#include "TankMovementComponent.h"
 #include "Tank.h"
 
 // Sets default values

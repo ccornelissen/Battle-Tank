@@ -39,8 +39,8 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	//Return if there is no controlled tank to aim
-	if (!ensure(AimComp))
+	//Return if aiming component is null
+	if (!AimComp)
 	{
 		return;
 	}

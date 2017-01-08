@@ -129,6 +129,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 //Move the tank barrel up and down to match the reticle
 void UTankAimingComponent::MoveBarrel(FVector AimAt)
 {
+	if (!ensure(TankBarrel))
+	{
+		return;
+	}
+
 	//Calculate where the barrel has to move based on target.
 	FRotator BarrelRotation = TankBarrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimAt.Rotation();
@@ -142,6 +147,11 @@ void UTankAimingComponent::MoveBarrel(FVector AimAt)
 //Rotate the tank turret to face the aiming reticle
 void UTankAimingComponent::MoveTurret(FVector AimAt)
 {
+	if (!ensure(TankTurret))
+	{
+		return;
+	}
+
 	FRotator TurretRotation = TankTurret->GetForwardVector().Rotation();
 	FRotator AimAtRotation = AimAt.Rotation();
 
