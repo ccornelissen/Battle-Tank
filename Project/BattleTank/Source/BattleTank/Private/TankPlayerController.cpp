@@ -14,7 +14,7 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s is set"), *GetControlledTank()->GetName());
 
-		UTankAimingComponent* AimComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+		AimComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
 
 		if (ensure(AimComp))
 		{
@@ -40,7 +40,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	//Return if there is no controlled tank to aim
-	if (!ensure(GetControlledTank()))
+	if (!ensure(AimComp))
 	{
 		return;
 	}
@@ -48,7 +48,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //Out parameter
 	if (GetSightRayHitLocation(HitLocation)) //Casting a ray trace at the hit location
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimComp->AimAt(HitLocation);
 	}
 }
 
@@ -71,9 +71,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector)
 			Vector = TraceHit.Location;
 
 			//Pass the hit to the aiming component to update the reticle
-			if (ensure(GetControlledTank()->TankAimingComponent))
+			if (ensure(AimComp))
 			{
-				GetControlledTank()->TankAimingComponent->SetAimingState(TraceHit);
+				AimComp->SetAimingState(TraceHit);
 			}
 
 			return true;

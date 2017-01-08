@@ -4,6 +4,7 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Tank.h"
+#include "TankProjectile.h"
 #include "TankAimingComponent.h"
 
 
@@ -68,6 +69,34 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 	MoveTurret(AimDirection);
 }
 
+//Fires the projectile from the gun
+void UTankAimingComponent::Fire()
+{
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
+
+	if (ensure(TankBarrel) && bIsReloaded)
+	{
+		FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
+		FRotator SpawnRot = TankBarrel->GetSocketRotation(FName("ProjectileLocation"));
+
+		if (ensure(ProjectileBlueprint))
+		{
+			ATankProjectile* CurProjectile = GetWorld()->SpawnActor<ATankProjectile>(ProjectileBlueprint, SpawnLoc, SpawnRot);
+
+			CurProjectile->LaunchProjectile(fLaunchSpeed);
+		}
+
+		fLastFireTime = GetWorld()->GetTimeSeconds();
+	}
+}
+
+//Used to update the reload UI progress bar
+float UTankAimingComponent::GetReloadTracker() const
+{
+	return GetWorld()->GetTimeSeconds() - fLastFireTime;
+}
+
+//Function to control the reticle color, based off of what the player is aiming at
 void UTankAimingComponent::SetAimingState(FHitResult Hit)
 {
 	if (Hit.Actor != nullptr)
@@ -90,6 +119,14 @@ void UTankAimingComponent::SetAimingState(FHitResult Hit)
 
 }
 
+//Sets the turret to aim at the hit location
+void UTankAimingComponent::AimAt(FVector HitLocation)
+{
+	//Passing the hit location and tank launch spped to the tank aiming component for firing the projectile
+	AimingAt(HitLocation, fLaunchSpeed);
+}
+
+//Move the tank barrel up and down to match the reticle
 void UTankAimingComponent::MoveBarrel(FVector AimAt)
 {
 	//Calculate where the barrel has to move based on target.
@@ -102,6 +139,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimAt)
 	TankBarrel->ElevateBarrel(RotationDifference.Pitch);
 }
 
+//Rotate the tank turret to face the aiming reticle
 void UTankAimingComponent::MoveTurret(FVector AimAt)
 {
 	FRotator TurretRotation = TankTurret->GetForwardVector().Rotation();

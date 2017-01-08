@@ -29,6 +29,8 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
 
+	UTankAimingComponent* AimComp = nullptr;
+
 private:
 	//Start the tank moving the barrel so that projectile will fly towards the cross hair
 	void AimTowardsCrosshair();
