@@ -20,4 +20,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float fMaxUnitsPerSecond = 450000.0f; //Mass times desired acceleration (45000kg * 10m/s)
 
+private:
+	UTankTrack();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 };
