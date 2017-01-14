@@ -46,8 +46,8 @@ void UTankMovementComponent::IntendMoveForward(float Speed)
 	}
 
 	//Applying speed equally to both tracks as the player wants to move forward.
-	LeftTrack->MoveTrack(Speed);
-	RightTrack->MoveTrack(Speed);
+	LeftTrack->SetThrottle(Speed);
+	RightTrack->SetThrottle(Speed);
 
 	//TODO prevent doubling of speed due to dual controls.
 }
@@ -60,8 +60,8 @@ void UTankMovementComponent::IntendRotate(float Speed)
 	}
 
 	//Rotating to the right, right track moves backwards, left forwards, rotating the tank
-	LeftTrack->MoveTrack(Speed);
-	RightTrack->MoveTrack(-Speed);
+	LeftTrack->SetThrottle(Speed);
+	RightTrack->SetThrottle(-Speed);
 
 	//TODO prevent doubling of speed due to dual controls.
 }
