@@ -16,7 +16,5 @@ public:
 	void MoveTurret(float fMoveDirection);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float fMaxDegreesPerSecond = 20.0f;
-
-	float fLastMoveSpeed = 0;
+	float fMaxDegreesPerSecond = 30.0f;
 };

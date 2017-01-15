@@ -5,16 +5,8 @@
 
 void UTankTurret::MoveTurret(float fMoveDirection)
 {
-	//Calculate distance between current rotation and target
-	float Temp = fMoveDirection;
-
 	//Clamp the move direction between one and negetive one
 	float fMoveSpeed = FMath::Clamp(fMoveDirection, -1.0f, 1.0f);
-
-	if (Temp < -200.0f || Temp > 200.0f)
-	{
-		fMoveSpeed = fLastMoveSpeed;
-	}
 
 	//Calculate the movement
 	float fRotationSpeed = fMoveSpeed * fMaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
@@ -24,8 +16,6 @@ void UTankTurret::MoveTurret(float fMoveDirection)
 
 	//Apply the movement to the turret.
 	SetRelativeRotation(NewRotator);
-
-	fLastMoveSpeed = fMoveSpeed;
 }
 
 

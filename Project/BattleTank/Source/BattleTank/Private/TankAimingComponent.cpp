@@ -155,8 +155,17 @@ void UTankAimingComponent::MoveTurret(FVector AimAt)
 	FRotator TurretRotation = TankTurret->GetForwardVector().Rotation();
 	FRotator AimAtRotation = AimAt.Rotation();
 
-	FVector RotationDifference = AimAtRotation.Euler() - TurretRotation.Euler();
+	FRotator RotationDifference = AimAtRotation - TurretRotation;
 
-	//Move the turret
-	TankTurret->MoveTurret(RotationDifference.Z);
+	//Check to make sure the turret rotates the shortest distance. 
+	if (FMath::Abs(RotationDifference.Yaw) < 190.0f)
+	{
+		//Move the turret
+		TankTurret->MoveTurret(RotationDifference.Yaw);
+	}
+	else
+	{
+		TankTurret->MoveTurret(-RotationDifference.Yaw);
+	}
+	
 }
