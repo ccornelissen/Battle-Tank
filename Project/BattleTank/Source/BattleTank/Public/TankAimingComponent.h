@@ -14,7 +14,8 @@ UENUM(BlueprintType)
 enum class EReticleState : uint8
 {
 	RS_Aiming UMETA(DisplayName = "Aiming"), //When the tank is aiming at something that is not an enemy
-	RS_Locked UMETA(DisplayName = "Locked") //When the tank is aiming at an enemy
+	RS_Locked UMETA(DisplayName = "Locked"), //When the tank is aiming at an enemy
+	RS_Empty UMETA(DisplayName = "Out of Ammo") //When the tank is out of shells
 };
 
 //Holds tank barrels properties
@@ -46,6 +47,10 @@ public:
 	//Stored variable that tracks how close the AI turret is to facing the players location
 	float fRotationDiff = 0.0f;
 
+	//Return the ammount of ammo the tank has left.
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EReticleState ReticleState = EReticleState::RS_Aiming;
@@ -72,6 +77,10 @@ private:
 	//Float that handles how often the tank can shoot
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float fTankReloadTimer = 3.0f;
+
+	//Amount of ammo the tank has
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int iAmmo = 5;
 
 	//Reference to the tanks fired projectile setup in the blueprint
 	UPROPERTY(EditAnywhere, Category = "Setup")

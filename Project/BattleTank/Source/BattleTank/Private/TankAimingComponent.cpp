@@ -74,11 +74,12 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 //Fires the projectile from the gun
 void UTankAimingComponent::Fire()
 {
+	//TODO make the state machine control the firing 
 	//Setting a bool based on if the player has reloaded
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
 
 	//Checking the barrel and reload bool
-	if (ensure(TankBarrel) && bIsReloaded)
+	if (ensure(TankBarrel) && bIsReloaded && iAmmo != 0)
 	{
 		//Creating projectile spawn variables
 		FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
@@ -93,6 +94,9 @@ void UTankAimingComponent::Fire()
 			CurProjectile->LaunchProjectile(fLaunchSpeed);
 		}
 
+		//Take away an ammo
+		iAmmo--;
+
 		//Set the reload timer
 		fLastFireTime = GetWorld()->GetTimeSeconds();
 	}
@@ -104,9 +108,22 @@ float UTankAimingComponent::GetReloadTracker() const
 	return GetWorld()->GetTimeSeconds() - fLastFireTime;
 }
 
+//Returns the ammount of ammo the tank has, currently used to update the UI
+int UTankAimingComponent::GetRoundsLeft() const
+{
+	return iAmmo;
+}
+
+
 //Function to control the reticle color, based off of what the player is aiming at
 void UTankAimingComponent::SetAimingState(FHitResult Hit)
 {
+	if (iAmmo == 0)
+	{
+		ReticleState = EReticleState::RS_Empty;
+		return;
+	}
+
 	if (Hit.Actor != nullptr)
 	{
 		APawn* Tank = Cast<APawn>(Hit.GetActor());
