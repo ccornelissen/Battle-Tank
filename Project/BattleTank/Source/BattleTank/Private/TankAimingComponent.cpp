@@ -16,6 +16,7 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+//Initialize references to tank components, this is done in the Tank blueprint
 void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 {
 	if (!ensure(Barrel))
@@ -35,10 +36,11 @@ void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 	TankTurret = Turret;
 }
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
+//Sets the turret to aim at the hit location
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
-	Super::BeginPlay();
+	//Passing the hit location and tank launch spped to the tank aiming component for firing the projectile
+	AimingAt(HitLocation, fLaunchSpeed);
 }
 
 //Function to find where the user is aiming, gets the vector that is used to control turret and barrel
@@ -62,7 +64,7 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 	}
 	else
 	{
-		AimDirection = HitLocation.GetSafeNormal();
+		AimDirection = HitLocation.GetSafeNormal(); //TODO make this return a better number so the barrel doesn't go "limp"
 	}
 
 	MoveBarrel(AimDirection);
@@ -72,20 +74,26 @@ void UTankAimingComponent::AimingAt(FVector HitLocation, float fFireVelocity)
 //Fires the projectile from the gun
 void UTankAimingComponent::Fire()
 {
+	//Setting a bool based on if the player has reloaded
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
 
+	//Checking the barrel and reload bool
 	if (ensure(TankBarrel) && bIsReloaded)
 	{
+		//Creating projectile spawn variables
 		FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
 		FRotator SpawnRot = TankBarrel->GetSocketRotation(FName("ProjectileLocation"));
 
 		if (ensure(ProjectileBlueprint))
 		{
+			//Spawn the projectile
 			ATankProjectile* CurProjectile = GetWorld()->SpawnActor<ATankProjectile>(ProjectileBlueprint, SpawnLoc, SpawnRot);
 
+			//Launch the projectile using set speed
 			CurProjectile->LaunchProjectile(fLaunchSpeed);
 		}
 
+		//Set the reload timer
 		fLastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }
@@ -119,13 +127,6 @@ void UTankAimingComponent::SetAimingState(FHitResult Hit)
 
 }
 
-//Sets the turret to aim at the hit location
-void UTankAimingComponent::AimAt(FVector HitLocation)
-{
-	//Passing the hit location and tank launch spped to the tank aiming component for firing the projectile
-	AimingAt(HitLocation, fLaunchSpeed);
-}
-
 //Move the tank barrel up and down to match the reticle
 void UTankAimingComponent::MoveBarrel(FVector AimAt)
 {
@@ -156,6 +157,9 @@ void UTankAimingComponent::MoveTurret(FVector AimAt)
 	FRotator AimAtRotation = AimAt.Rotation();
 
 	FRotator RotationDifference = AimAtRotation - TurretRotation;
+
+	//Storing as public variable so the AI knows when it is aiming towards the player and can fire. 
+	fRotationDiff = RotationDifference.Yaw;
 
 	//Check to make sure the turret rotates the shortest distance. 
 	if (FMath::Abs(RotationDifference.Yaw) < 190.0f)

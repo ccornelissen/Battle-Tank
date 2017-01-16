@@ -11,8 +11,6 @@ void ATankPlayerController::BeginPlay()
 
 	if (ensure(GetPawn()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is set"), *GetPawn()->GetName());
-
 		AimComp = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 
 		if (ensure(AimComp))

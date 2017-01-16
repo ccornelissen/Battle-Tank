@@ -26,9 +26,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
 	float fAIFightRadius = 6000.0f;
 
-	//The distance before the AI starts to engage the target
-	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
-	float fAIEngageRadius = 12000.0f;
-
 	UTankAimingComponent* AimingComponent = nullptr;
 };

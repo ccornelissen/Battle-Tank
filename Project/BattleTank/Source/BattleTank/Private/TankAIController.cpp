@@ -33,11 +33,22 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		MoveToActor(PlayerTank, fAIFightRadius);
 
-		//Aim towards the player
-		AimingComponent->AimAt(PlayerTank->GetActorLocation());
+		//Get player location
+		FVector PlayerLoc = PlayerTank->GetActorLocation();
 
-		//Fire if ready
-		AimingComponent->Fire();
+		//Aim towards the player
+		AimingComponent->AimAt(PlayerLoc);
+
+		//if the barrel is aimed near the player allow AI tank to fire. 
+		if (AimingComponent->fRotationDiff < 10.0f)
+		{
+			//Pass the hit to the aiming component to update the reticle
+			if (ensure(AimingComponent))
+			{
+				AimingComponent->Fire();
+			}
+
+		}
 	}
 }
 

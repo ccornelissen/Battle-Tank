@@ -30,12 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-	void AimingAt(FVector HitLocation, float fFireVelocity);
-
-	void SetAimingState(FHitResult Hit);
+	//Function that aims at the given location
+	void AimAt(FVector HitLocation);
 
 	//Firest the tank
 	UFUNCTION(BlueprintCallable, Category = "Tank")
@@ -44,9 +40,11 @@ public:
 	//Variable used to set and update reloading UI
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	float GetReloadTracker() const;
-	
-	//Function that aims at the given location
-	void AimAt(FVector HitLocation);
+
+	void SetAimingState(FHitResult Hit);
+
+	//Stored variable that tracks how close the AI turret is to facing the players location
+	float fRotationDiff = 0.0f;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -78,6 +76,8 @@ private:
 	//Reference to the tanks fired projectile setup in the blueprint
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<ATankProjectile> ProjectileBlueprint;
+
+	void AimingAt(FVector HitLocation, float fFireVelocity);
 
 	//Float to track the last time the tank fired
 	float fLastFireTime = 0.0;
