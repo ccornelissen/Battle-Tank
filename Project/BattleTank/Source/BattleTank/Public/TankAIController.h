@@ -26,5 +26,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
 	float fAIFightRadius = 6000.0f;
 
+	//Controls how close the turret rotation needs to be to the player before AI will begin firing.
+	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
+	float fAIAim = 10.0f;
+
 	UTankAimingComponent* AimingComponent = nullptr;
 };

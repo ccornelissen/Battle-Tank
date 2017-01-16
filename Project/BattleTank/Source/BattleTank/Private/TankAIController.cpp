@@ -40,7 +40,7 @@ void ATankAIController::Tick(float DeltaTime)
 		AimingComponent->AimAt(PlayerLoc);
 
 		//if the barrel is aimed near the player allow AI tank to fire. 
-		if (AimingComponent->fRotationDiff < 10.0f)
+		if (AimingComponent->fRotationDiff < fAIAim)
 		{
 			//Pass the hit to the aiming component to update the reticle
 			if (ensure(AimingComponent))
