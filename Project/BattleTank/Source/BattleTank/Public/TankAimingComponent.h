@@ -49,7 +49,7 @@ public:
 
 	//Return the ammount of ammo the tank has left.
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -80,7 +80,7 @@ private:
 
 	//Amount of ammo the tank has
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int iAmmo = 5;
+	int32 iAmmo = 5;
 
 	//Reference to the tanks fired projectile setup in the blueprint
 	UPROPERTY(EditAnywhere, Category = "Setup")
