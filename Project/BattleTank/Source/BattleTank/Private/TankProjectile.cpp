@@ -25,6 +25,9 @@ ATankProjectile::ATankProjectile()
 	ImpactBlast->bAutoActivate = false;
 	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 	//Creating the projectile movement component, this propels our projectile through the air
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement Component"));
 	ProjectileMovement->bAutoActivate = false;
@@ -42,6 +45,8 @@ void ATankProjectile::BeginPlay()
 void ATankProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	LaunchBlast->Deactivate();
+	
+	ExplosionForce->FireImpulse();
 
 	ImpactBlast->Activate();
 }
