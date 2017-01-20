@@ -34,6 +34,18 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	URadialForceComponent* ExplosionForce = nullptr;
 
+	//Length of time before the projectile is destoryed. Want this to match up with Impact particle length.
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float fLifeSpan = 5.0f;
+
+	//Amount of damage the projectile deals to the hit target.
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float fProjectileDamage = 20.0f;
+
+	void OnTimerExpire();
+
+	bool bLifeTimer = false;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 	

@@ -22,3 +22,30 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComp)
 {
 	Super::SetupPlayerInputComponent(InputComp);
 }
+
+float ATank::fGetHealthPercent() const
+{
+	return (float)iCurrentHealth / (float)iTankHealth;
+}
+
+float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+{
+	//Set incoming float to an int. (This is just to keep the numbers nice and round, comparing floats can get ugly)
+	int32 iDamagePoints = FPlatformMath::RoundToInt(Damage);
+
+	//Clamp the damage between 0 and our health. 
+	int32 iActualDamage = FMath::Clamp<int32>(iDamagePoints, 0, iCurrentHealth);
+
+	//Apply damage
+	iCurrentHealth -= iActualDamage;
+
+	//If tank is dead, let it die
+	if (iCurrentHealth <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Dead"));
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("%i"), iCurrentHealth);
+
+	return Damage;
+}

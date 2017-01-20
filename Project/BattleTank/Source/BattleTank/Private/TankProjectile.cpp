@@ -40,20 +40,55 @@ void ATankProjectile::BeginPlay()
 	
 	//Adding the On Hit function to the primitive component
 	CollisionMesh->OnComponentHit.AddDynamic(this, &ATankProjectile::OnHit);
+
+
 }
 
+//On hit function called when the projectile collides with another object
 void ATankProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
+	//Deactivate the launch particles
 	LaunchBlast->Deactivate();
 	
+	//Apply the explosion force
 	ExplosionForce->FireImpulse();
 
+	//Activate the impact blast
 	ImpactBlast->Activate();
+
+	//Set ImpactBlast as the root component (so we can destroy collision safely)
+	SetRootComponent(ImpactBlast);
+
+	//Destroy the collision mesh
+	CollisionMesh->DestroyComponent(false);
+
+	//Apply damage to the enemy tank. 
+	UGameplayStatics::ApplyRadialDamage(
+		this, 
+		fProjectileDamage, //Set on blueprint
+		GetActorLocation(), 
+		ExplosionForce->Radius, //Takes the radius from the explosion force 
+		UDamageType::StaticClass(), 
+		TArray<AActor*>() //Empty array as there are no actors we want to ignore
+	);
+
+	//Set a timer to destroy the projectile
+	FTimerHandle ProjectileHandle;
+	GetWorld()->GetTimerManager().SetTimer(ProjectileHandle, this, &ATankProjectile::OnTimerExpire, fLifeSpan);
 }
 
+void ATankProjectile::OnTimerExpire()
+{
+	Destroy();
+}
+
+//When the projectile is spawned and fired from the tank. 
 void ATankProjectile::LaunchProjectile(float fFireSpeed)
 {
+	//Active the movement component
 	ProjectileMovement->Activate();
+	
+	//Apply the fire force to the projectile. 
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * fFireSpeed);
 }
 
