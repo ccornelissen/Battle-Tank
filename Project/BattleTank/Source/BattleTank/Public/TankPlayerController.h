@@ -29,6 +29,14 @@ protected:
 	UTankAimingComponent* AimComp = nullptr;
 
 private:
+
+	//Overriding to set up delegate when pawn get controlled
+	virtual void SetPawn(APawn* InPawn) override;
+
+	//Function called on death
+	UFUNCTION()
+	void OnDeath();
+
 	//Start the tank moving the barrel so that projectile will fly towards the cross hair
 	void AimTowardsCrosshair();
 

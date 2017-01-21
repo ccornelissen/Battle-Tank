@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 
@@ -25,6 +26,23 @@ void ATankPlayerController::BeginPlay()
 
 }
 
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		//Get the possessed tank
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+
+		if (PossessedTank)
+		{
+			//Attach on death function to the tank delegate
+			PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnDeath);
+		}
+	}
+}
+
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -32,6 +50,11 @@ void ATankPlayerController::Tick(float DeltaTime)
 	//Aim towards crosshair
 	AimTowardsCrosshair();
 
+}
+
+void ATankPlayerController::OnDeath()
+{
+	StartSpectatingOnly();
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
@@ -68,7 +91,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector)
 			Vector = TraceHit.Location;
 
 			//Pass the hit to the aiming component to update the reticle
-			if (ensure(AimComp))
+			if (AimComp)
 			{
 				AimComp->SetAimingState(TraceHit);
 			}

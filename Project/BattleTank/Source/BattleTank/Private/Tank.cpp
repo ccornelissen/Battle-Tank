@@ -15,6 +15,8 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//Set current health equal to blueprint health, If set in contructor or header it does not set correctly
+	iCurrentHealth = iTankHealth;
 }
 
 // Called to bind functionality to input
@@ -25,6 +27,7 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComp)
 
 float ATank::fGetHealthPercent() const
 {
+	//return current health divided by the maximum possible health to get the percent value
 	return (float)iCurrentHealth / (float)iTankHealth;
 }
 
@@ -42,7 +45,7 @@ float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, cl
 	//If tank is dead, let it die
 	if (iCurrentHealth <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Dead"));
+		OnDeath.Broadcast();
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("%i"), iCurrentHealth);

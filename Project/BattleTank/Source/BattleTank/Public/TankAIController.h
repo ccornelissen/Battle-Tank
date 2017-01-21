@@ -22,6 +22,13 @@ private:
 
 	void Tick(float DeltaSeconds) override;
 
+	//Overriding to set up delegate when pawn get controlled
+	virtual void SetPawn(APawn* InPawn) override;
+
+	//Function called on death
+	UFUNCTION()
+	void OnDeath();
+
 	//The closest distance the AI tank will bring itself to the player.
 	UPROPERTY(EditDefaultsOnly, Category = AIVariables)
 	float fAIFightRadius = 6000.0f;
