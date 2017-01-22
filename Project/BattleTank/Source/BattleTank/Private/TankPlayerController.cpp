@@ -85,7 +85,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& Vector)
 		FVector TraceDistance = StartLocation + LookDir * fLineTraceRange;
 
 		//Check if the line trace hits anything
-		if (GetWorld()->LineTraceSingleByChannel(TraceHit, StartLocation, TraceDistance, ECollisionChannel::ECC_Visibility, TraceParams))
+		if (GetWorld()->LineTraceSingleByChannel(TraceHit, StartLocation, TraceDistance, ECollisionChannel::ECC_Camera, TraceParams))
 		{
 			//Set the return vector to the location it hit
 			Vector = TraceHit.Location;
