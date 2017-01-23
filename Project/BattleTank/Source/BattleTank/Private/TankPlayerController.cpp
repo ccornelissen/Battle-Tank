@@ -23,7 +23,6 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player controller cannot find the controlled tank"))
 	}
-
 }
 
 void ATankPlayerController::SetPawn(APawn* InPawn)
@@ -50,6 +49,12 @@ void ATankPlayerController::Tick(float DeltaTime)
 	//Aim towards crosshair
 	AimTowardsCrosshair();
 
+}
+
+void ATankPlayerController::SetViewportAdjust(float fAdjust, float fCrossHair)
+{
+	fViewportAdjust = fAdjust;
+	fCrossHairYLocation = fCrossHair;
 }
 
 void ATankPlayerController::OnDeath()
@@ -108,11 +113,12 @@ bool ATankPlayerController::GetLookDirection(FVector& LookDirection) const
 {
 	//Int's to hold the size of the current viewport
 	int32 iViewportSizeX, iViewportSizeY;
+
 	//Grabbing the current view port size
 	GetViewportSize(iViewportSizeX, iViewportSizeY);
 
 	//Creating a 2D vector based on viewport size times the cross hair location. Cross hair locations are public variables
-	FVector2D ScreenLocation = FVector2D(iViewportSizeX * fCrossHairXLocation, iViewportSizeY * fCrossHairYLocation);
+	FVector2D ScreenLocation = FVector2D(iViewportSizeX * fCrossHairXLocation, (iViewportSizeY * fViewportAdjust)* fCrossHairYLocation);
 
 	FVector CameraLoc;
 

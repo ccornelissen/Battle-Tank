@@ -21,6 +21,8 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaSeconds) override;
 
+	void SetViewportAdjust(float fAdjust, float fCrossHair);
+
 protected:
 	//Function that tells the UI when it is safe to set its components
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
@@ -36,6 +38,9 @@ private:
 	//Function called on death
 	UFUNCTION()
 	void OnDeath();
+
+	//Adjust viewport in the case of split screen
+	float fViewportAdjust = 1.0f;
 
 	//Start the tank moving the barrel so that projectile will fly towards the cross hair
 	void AimTowardsCrosshair();
