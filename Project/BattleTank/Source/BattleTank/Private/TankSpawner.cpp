@@ -39,11 +39,13 @@ void ATankSpawner::AddPlayerTwo()
 	{
 		PlayerTwoController->Possess(PlayerTwoTank);
 
-		PlayerTwoController->SetViewportAdjust(0.5f, -0.33333f); //TODO fix player two controllers aiming, it doesn't know where its crosshair is.
+		//Adjust the players aiming for the bottom screen
+		PlayerTwoController->SetViewportAdjust(2.0f);
 
 		ATankPlayerController* PlayerOne = Cast<ATankPlayerController>(GetWorld()->GetFirstPlayerController());
 
-		PlayerOne->SetViewportAdjust(0.5f, 0.33333f);
+		//Adjusting players aiming for the top screen
+		PlayerOne->SetViewportAdjust(0.5f);
 	}
 	
 	
@@ -58,12 +60,11 @@ void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("%i"), bTwoPlayers);
-
-	if (bTwoPlayers)
-	{
+	//if (bTwoPlayers)
+	//{
+		//Add player two if the player set the bool true in the settings
 		AddPlayerTwo();
-	}
+	//}
 }
 
 

@@ -21,7 +21,7 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaSeconds) override;
 
-	void SetViewportAdjust(float fAdjust, float fCrossHair);
+	void SetViewportAdjust(float Viewport);
 
 protected:
 	//Function that tells the UI when it is safe to set its components

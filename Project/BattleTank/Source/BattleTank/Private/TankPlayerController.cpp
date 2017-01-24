@@ -51,10 +51,9 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
-void ATankPlayerController::SetViewportAdjust(float fAdjust, float fCrossHair)
+void ATankPlayerController::SetViewportAdjust(float Viewport)
 {
-	fViewportAdjust = fAdjust;
-	fCrossHairYLocation = fCrossHair;
+	fViewportAdjust = Viewport;
 }
 
 void ATankPlayerController::OnDeath()
@@ -119,6 +118,8 @@ bool ATankPlayerController::GetLookDirection(FVector& LookDirection) const
 
 	//Creating a 2D vector based on viewport size times the cross hair location. Cross hair locations are public variables
 	FVector2D ScreenLocation = FVector2D(iViewportSizeX * fCrossHairXLocation, (iViewportSizeY * fViewportAdjust)* fCrossHairYLocation);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s: %f"), *GetPawn()->GetName(), ScreenLocation.Y);
 
 	FVector CameraLoc;
 
