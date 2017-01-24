@@ -8,6 +8,8 @@
 
 class UTankAimingComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathEvent); //To trigger events in blueprint on death 
+
 /**
  *  Controls the players interactions with the tank and aiming component
  */
@@ -28,9 +30,16 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
 
+	//Event to tell blueprint the user has died
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+	void TankDeath(FVector Location, FRotator Rotation); 
+
 	UTankAimingComponent* AimComp = nullptr;
 
 private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UParticleSystemComponent* DeathExplosion = nullptr;
 
 	//Overriding to set up delegate when pawn get controlled
 	virtual void SetPawn(APawn* InPawn) override;

@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "Tank.h"
 #include "TankPlayerController.h"
+#include "TankAIController.h"
 #include "TankSpawner.h"
 
 
@@ -25,8 +26,8 @@ void ATankSpawner::Initialize(int32 iBotNum, bool bPlayerTeam, bool bTwoPlay)
 void ATankSpawner::AddPlayerTwo()
 {
 	//Get spawn location
-	FVector SpawnLoc = SpawnerArray[1]->GetActorLocation();
-	FRotator SpawnRot = SpawnerArray[1]->GetActorRotation();
+	FVector SpawnLoc = SpawnerArray[0]->GetActorLocation();
+	FRotator SpawnRot = SpawnerArray[0]->GetActorRotation();
 
 	//Spawn the controlled tank
 	ATank* PlayerTwoTank = GetWorld()->SpawnActor<ATank>(TankBlueprint, SpawnLoc, SpawnRot);
@@ -53,6 +54,40 @@ void ATankSpawner::AddPlayerTwo()
 
 void ATankSpawner::Spawner()
 {
+	int32 iCount = 0;
+
+	if (bTwoPlayers)
+	{
+		//Add player two if the player set the bool true in the settings
+		AddPlayerTwo();
+
+		iCount++;
+	}
+
+	for (iCount; iCount < iNumberOfBots; iCount++)
+	{
+		if (SpawnerArray[iCount])
+		{
+			//Get spawn location
+			FVector SpawnLoc = SpawnerArray[iCount]->GetActorLocation();
+			FRotator SpawnRot = SpawnerArray[iCount]->GetActorRotation();
+
+
+			//Spawn AI
+			ATankAIController* Bot = GetWorld()->SpawnActor<ATankAIController>(AIControllerBlueprint, SpawnLoc, SpawnRot);
+
+			//Possess body
+			if (Bot)
+			{
+				//Spawn the controlled tank
+				ATank* BotTank = GetWorld()->SpawnActor<ATank>(TankBlueprint, SpawnLoc, SpawnRot);
+
+				Bot->Possess(BotTank);
+			}
+		}
+	}
+
+
 }
 
 // Called when the game starts or when spawned
@@ -60,11 +95,7 @@ void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//if (bTwoPlayers)
-	//{
-		//Add player two if the player set the bool true in the settings
-		AddPlayerTwo();
-	//}
+	Spawner();
 }
 
 

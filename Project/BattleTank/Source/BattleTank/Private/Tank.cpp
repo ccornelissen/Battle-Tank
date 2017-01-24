@@ -48,7 +48,5 @@ float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, cl
 		OnDeath.Broadcast();
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%i"), iCurrentHealth);
-
 	return Damage;
 }

@@ -58,6 +58,13 @@ void ATankPlayerController::SetViewportAdjust(float Viewport)
 
 void ATankPlayerController::OnDeath()
 {
+	FVector PawnLoc = GetPawn()->GetActorLocation();
+	FRotator PawnRot = GetPawn()->GetActorRotation();
+
+	TankDeath(PawnLoc, PawnRot);
+
+	GetPawn()->Destroy();
+	
 	StartSpectatingOnly();
 }
 
@@ -118,8 +125,6 @@ bool ATankPlayerController::GetLookDirection(FVector& LookDirection) const
 
 	//Creating a 2D vector based on viewport size times the cross hair location. Cross hair locations are public variables
 	FVector2D ScreenLocation = FVector2D(iViewportSizeX * fCrossHairXLocation, (iViewportSizeY * fViewportAdjust)* fCrossHairYLocation);
-
-	UE_LOG(LogTemp, Warning, TEXT("%s: %f"), *GetPawn()->GetName(), ScreenLocation.Y);
 
 	FVector CameraLoc;
 
