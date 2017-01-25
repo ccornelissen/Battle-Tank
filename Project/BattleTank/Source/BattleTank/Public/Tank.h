@@ -20,6 +20,9 @@ public:
 	//Delegate that broadcasts to the controller when the tank dies
 	FOnDeath OnDeath;
 
+	//Set color based on team
+	void SetTeamColor(UMaterialInterface* Color);
+
 private:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -36,6 +39,16 @@ private:
 	//The amount of health the tanks have
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 iTankHealth = 100;
+
+	////Mesh references that have their color changed based on team 
+	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
+	//UStaticMeshComponent* BodyMesh = nullptr;
+
+	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
+	//UStaticMeshComponent* TurretMesh = nullptr;
+
+	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
+	//UStaticMeshComponent* BarrelMesh = nullptr;
 
 	int32 iCurrentHealth;
 };

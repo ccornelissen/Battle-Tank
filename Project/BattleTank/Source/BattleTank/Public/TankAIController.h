@@ -7,6 +7,14 @@
 
 class UTankAimingComponent;
 
+//Controls the owning team of the tank
+UENUM()
+enum class EAITeam : uint8
+{
+	AT_Blue,
+	AT_Red
+};
+
 /**
  *  Controls how the AI interacts with the tank and aiming component
  */
@@ -15,6 +23,9 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+	EAITeam AITeam = EAITeam::AT_Blue;
 
 private:
 

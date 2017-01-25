@@ -10,10 +10,17 @@ class UTankAimingComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathEvent); //To trigger events in blueprint on death 
 
-/**
- *  Controls the players interactions with the tank and aiming component
- */
+//Controls the owning team of the tank
+UENUM()
+enum class EPlayerTeam : uint8
+{
+	PT_Blue,
+	PT_Red
+};
 
+/**
+*  Controls the players interactions with the tank and aiming component
+*/
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
 {
@@ -24,6 +31,8 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 	void SetViewportAdjust(float Viewport);
+
+	EPlayerTeam PlayerTeam = EPlayerTeam::PT_Blue;
 
 protected:
 	//Function that tells the UI when it is safe to set its components

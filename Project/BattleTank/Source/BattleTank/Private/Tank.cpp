@@ -31,6 +31,21 @@ float ATank::fGetHealthPercent() const
 	return (float)iCurrentHealth / (float)iTankHealth;
 }
 
+void ATank::SetTeamColor(UMaterialInterface* Color)
+{
+	if (Color)
+	{
+		TArray<UStaticMeshComponent*> StaticMeshArray;
+
+		GetComponents(StaticMeshArray);
+
+		for (UStaticMeshComponent* Mesh : StaticMeshArray)
+		{
+			Mesh->SetMaterial(0, Color);
+		}
+	}
+}
+
 float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
 {
 	//Set incoming float to an int. (This is just to keep the numbers nice and round, comparing floats can get ugly)

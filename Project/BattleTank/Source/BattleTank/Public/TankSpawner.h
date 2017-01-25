@@ -26,6 +26,14 @@ private:
 	//Spawn a second player if necessary
 	void AddPlayerTwo();
 
+	//Set the tank team on the AI tank and controller
+	void SetTeam(ATank* Tank, ATankAIController* Controller);
+
+	//Team tracking ints
+	int32 iBlueTeam = 1;
+	int32 iRedTeam = 0;
+
+
 	//Create an array the will hold the spawn point locations
 	UPROPERTY(EditAnywhere, Category = "Spawn Points")
 	TArray<AActor*> SpawnerArray;
@@ -50,9 +58,6 @@ private:
 	//Materials that are set on the tanks based on team
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	UMaterialInterface* RedMaterial;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	UMaterialInterface* BlueMaterial;
 
 	//Number of bots to spawn
 	int32 iNumberOfBots = 0;

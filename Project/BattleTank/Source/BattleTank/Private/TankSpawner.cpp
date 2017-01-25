@@ -47,9 +47,43 @@ void ATankSpawner::AddPlayerTwo()
 
 		//Adjusting players aiming for the top screen
 		PlayerOne->SetViewportAdjust(0.5f);
+
+		//If they don't want players on the same team change player twos color and team to red team
+		if (bPlayerSameTeam == false)
+		{
+			PlayerTwoTank->SetTeamColor(RedMaterial);
+
+			PlayerTwoController->PlayerTeam = EPlayerTeam::PT_Red;
+
+			iRedTeam++;
+		}
+		else
+		{
+			iBlueTeam++;
+		}
 	}
 	
 	
+}
+
+//Change tank color and controller team association
+void ATankSpawner::SetTeam(ATank* Tank, ATankAIController* Controller)
+{
+	if (Tank != nullptr && Controller != nullptr)
+	{
+		//Check the number of players on each team to ensure they stay equal. 
+		if (iBlueTeam <= iRedTeam)
+		{
+			//Don't need to set team or tank color as blue is the default
+			iBlueTeam++;
+		}
+		else
+		{
+			Tank->SetTeamColor(RedMaterial);
+			iRedTeam++;
+			Controller->AITeam = EAITeam::AT_Red;
+		}
+	}
 }
 
 void ATankSpawner::Spawner()
@@ -82,7 +116,12 @@ void ATankSpawner::Spawner()
 				//Spawn the controlled tank
 				ATank* BotTank = GetWorld()->SpawnActor<ATank>(TankBlueprint, SpawnLoc, SpawnRot);
 
-				Bot->Possess(BotTank);
+				if (BotTank)
+				{
+					Bot->Possess(BotTank);
+
+					SetTeam(BotTank, Bot);
+				}
 			}
 		}
 	}
