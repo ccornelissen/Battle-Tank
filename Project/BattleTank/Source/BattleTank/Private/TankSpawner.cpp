@@ -18,6 +18,7 @@ ATankSpawner::ATankSpawner()
 
 void ATankSpawner::Initialize(int32 iBotNum, bool bPlayerTeam, bool bTwoPlay)
 {
+	//Take in the level settings to set the spawner settings, this is handled in the spawner blueprint
 	iNumberOfBots = iBotNum;
 	bPlayerSameTeam = bPlayerTeam;
 	bTwoPlayers = bTwoPlay;
@@ -43,11 +44,14 @@ void ATankSpawner::AddPlayerTwo()
 		//Adjust the players aiming for the bottom screen
 		PlayerTwoController->SetViewportAdjust(2.0f);
 
+		//Adjusting players aiming for the top screen
 		ATankPlayerController* PlayerOne = Cast<ATankPlayerController>(GetWorld()->GetFirstPlayerController());
 
-		//Adjusting players aiming for the top screen
-		PlayerOne->SetViewportAdjust(0.5f);
-
+		if (PlayerOne)
+		{
+			PlayerOne->SetViewportAdjust(0.5f);
+		}
+		
 		//If they don't want players on the same team change player twos color and team to red team
 		if (bPlayerSameTeam == false)
 		{
@@ -56,10 +60,12 @@ void ATankSpawner::AddPlayerTwo()
 			PlayerTwoController->PlayerTeam = EPlayerTeam::PT_Red;
 
 			iRedTeam++;
+			RedTeam.Emplace(PlayerTwoTank);
 		}
 		else
 		{
 			iBlueTeam++;
+			BlueTeam.Emplace(PlayerTwoTank);
 		}
 	}
 	
@@ -76,12 +82,16 @@ void ATankSpawner::SetTeam(ATank* Tank, ATankAIController* Controller)
 		{
 			//Don't need to set team or tank color as blue is the default
 			iBlueTeam++;
+
+			BlueTeam.Emplace(Tank); //Add tank to blue team array
 		}
 		else
 		{
 			Tank->SetTeamColor(RedMaterial);
 			iRedTeam++;
 			Controller->AITeam = EAITeam::AT_Red;
+
+			RedTeam.Emplace(Tank); //Add tank to red team array
 		}
 	}
 }
@@ -133,6 +143,13 @@ void ATankSpawner::Spawner()
 void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ATank* PlayerOneTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (PlayerOneTank)
+	{
+		BlueTeam.Emplace(PlayerOneTank);
+	}
 
 	Spawner();
 }

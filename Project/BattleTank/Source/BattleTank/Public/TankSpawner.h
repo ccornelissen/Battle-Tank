@@ -22,6 +22,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(int32 iBotNum, bool bPlayerTeam, bool bTwoPlay);
 
+	//Arrays passed to AI tanks to know who their enemy targets are
+	TArray<ATank*> RedTeam;
+	TArray<ATank*> BlueTeam;
+
 private:
 	//Spawn a second player if necessary
 	void AddPlayerTwo();

@@ -6,6 +6,7 @@
 #include "TankAIController.generated.h"
 
 class UTankAimingComponent;
+class ATank;
 
 //Controls the owning team of the tank
 UENUM()
@@ -25,13 +26,20 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 
 public:
+
 	EAITeam AITeam = EAITeam::AT_Blue;
 
 private:
 
 	void BeginPlay() override;
 
+	void GetNearestTank();
+
+	ATank* NearestTank = nullptr;
+
 	void Tick(float DeltaSeconds) override;
+
+	TArray<ATank*> EnemyTanks;
 
 	//Overriding to set up delegate when pawn get controlled
 	virtual void SetPawn(APawn* InPawn) override;
