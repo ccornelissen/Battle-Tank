@@ -57,15 +57,15 @@ void ATankSpawner::AddPlayerTwo()
 		{
 			PlayerTwoTank->SetTeamColor(RedMaterial);
 
+			PlayerTwoTank->TankTeam = ETankTeam::TT_Red;
+
 			PlayerTwoController->PlayerTeam = EPlayerTeam::PT_Red;
 
 			iRedTeam++;
-			RedTeam.Emplace(PlayerTwoTank);
 		}
 		else
 		{
 			iBlueTeam++;
-			BlueTeam.Emplace(PlayerTwoTank);
 		}
 	}
 	
@@ -82,16 +82,13 @@ void ATankSpawner::SetTeam(ATank* Tank, ATankAIController* Controller)
 		{
 			//Don't need to set team or tank color as blue is the default
 			iBlueTeam++;
-
-			BlueTeam.Emplace(Tank); //Add tank to blue team array
 		}
 		else
 		{
 			Tank->SetTeamColor(RedMaterial);
 			iRedTeam++;
+			Tank->TankTeam = ETankTeam::TT_Red;
 			Controller->AITeam = EAITeam::AT_Red;
-
-			RedTeam.Emplace(Tank); //Add tank to red team array
 		}
 	}
 }
@@ -144,13 +141,7 @@ void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* PlayerOneTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-
-	if (PlayerOneTank)
-	{
-		BlueTeam.Emplace(PlayerOneTank);
-	}
-
+	//Spawn all the necessary tanks
 	Spawner();
 }
 

@@ -7,6 +7,13 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
+UENUM()
+enum class ETankTeam : uint8
+{
+	TT_Blue,
+	TT_Red
+};
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -22,6 +29,8 @@ public:
 
 	//Set color based on team
 	void SetTeamColor(UMaterialInterface* Color);
+
+	ETankTeam TankTeam = ETankTeam::TT_Blue;
 
 private:
 	// Sets default values for this pawn's properties

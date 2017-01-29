@@ -2,7 +2,6 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
-#include "TankSpawner.h" //To access array of tanks
 #include "Tank.h" //To implement on death
 #include "TankAIController.h"
 
@@ -23,24 +22,8 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("%s, does not have an aiming component"), *GetPawn()->GetName());
 	}
 
-	//Get the spawner from the world
-	for (TActorIterator<ATankSpawner> SpawnItr(GetWorld()); SpawnItr; ++SpawnItr)
-	{
-		//Set array of enemy tanks based off of set team
-		if (SpawnItr)
-		{
-			if (AITeam == EAITeam::AT_Red)
-			{
-				EnemyTanks = SpawnItr->BlueTeam;
-			}
-			else
-			{
-				EnemyTanks = SpawnItr->RedTeam;
-			}
-		}
-
-		GetNearestTank();
-	}
+	//Get the nearest tank off start
+	GetNearestTank();
 
 }
 
@@ -48,30 +31,62 @@ void ATankAIController::GetNearestTank()
 {
 	float NearestDist;
 
-	if (!NearestTank)
+	NearestDist = 90000000000000000000000000000000000000.0f;
+	
+	if (AITeam == EAITeam::AT_Red) //Look for blue tanks
 	{
-		NearestDist = 10000000000000000000.0f;
-	}
-	else
-	{
-		FVector CurTankLoc = NearestTank->GetActorLocation();
-		FVector OurLoc = GetPawn()->GetActorLocation();
+		iEnemiesRemain = 0;
 
-		NearestDist = FVector::Dist(OurLoc, CurTankLoc);
-	}
-
-	for (ATank* CurTank : EnemyTanks)
-	{
-		if (CurTank && GetPawn())
+		for (TActorIterator<ATank> TankItr(GetWorld()); TankItr; ++TankItr)
 		{
-			FVector CurTankLoc = CurTank->GetActorLocation();
-			FVector OurLoc = GetPawn()->GetActorLocation();
-
-			float Dist = FVector::Dist(OurLoc, CurTankLoc);
-
-			if (Dist < NearestDist)
+			//Go through tanks in the world
+			if (TankItr && GetPawn())
 			{
-				NearestTank = CurTank;
+				if (TankItr->TankTeam == ETankTeam::TT_Blue)
+				{
+					//Track each enemy on the field
+					iEnemiesRemain++;
+
+					FVector CurTankLoc = TankItr->GetActorLocation();
+					FVector OurLoc = GetPawn()->GetActorLocation();
+
+					float Dist = FVector::Dist(OurLoc, CurTankLoc);
+
+					//Update nearest tank if the current tank is closer
+					if (Dist < NearestDist)
+					{
+						NearestDist = Dist;
+						NearestTank = *TankItr;
+					}
+				}
+			}
+		}
+	}
+	else //Look for red tanks
+	{
+		for (TActorIterator<ATank> TankItr(GetWorld()); TankItr; ++TankItr)
+		{
+			iEnemiesRemain = 0;
+
+			//Go through tanks in the world
+			if (TankItr && GetPawn())
+			{
+				if (TankItr->TankTeam == ETankTeam::TT_Red)
+				{
+					iEnemiesRemain++;
+
+					FVector CurTankLoc = TankItr->GetActorLocation();
+					FVector OurLoc = GetPawn()->GetActorLocation();
+
+					float Dist = FVector::Dist(OurLoc, CurTankLoc);
+
+					if (Dist < NearestDist)
+					{
+						NearestDist = Dist;
+						NearestTank = *TankItr;
+					}
+
+				}
 			}
 		}
 	}
@@ -99,24 +114,29 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (NearestTank)
+	//If no enemies remain stop the tank from trying to act
+	if (iEnemiesRemain > 0) 
 	{
 		GetNearestTank();
-		MoveToActor(NearestTank, fAIFightRadius);
 
-		//Get player location
-		FVector TankLoc = NearestTank->GetActorLocation();
-		if (AimingComponent)
+		if (NearestTank)
 		{
-			//Aim towards the player
-			AimingComponent->AimAt(TankLoc);
+			MoveToActor(NearestTank, fAIFightRadius);
 
-			//if the barrel is aimed near the player allow AI tank to fire. 
-			if (AimingComponent->fRotationDiff < fAIAim)
+			//Get player location
+			FVector TankLoc = NearestTank->GetActorLocation();
+			if (AimingComponent)
 			{
-				//Pass the hit to the aiming component to update the reticle
-				AimingComponent->Fire();
+				//Aim towards the player
+				AimingComponent->AimAt(TankLoc);
 
+				//if the barrel is aimed near the player allow AI tank to fire. 
+				if (AimingComponent->fRotationDiff < fAIAim)
+				{
+					//Pass the hit to the aiming component to update the reticle
+					AimingComponent->Fire();
+
+				}
 			}
 		}
 	}
@@ -124,10 +144,13 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::OnDeath()
 {
-	if (GetPawn())
-	{
-		GetPawn()->DetachFromControllerPendingDestroy();
-	}
+	APawn* TankPawn = GetPawn();
+
+	TankPawn->DetachFromControllerPendingDestroy();
+
+	TankPawn->Destroy();
+
+	Destroy();
 }
 
 

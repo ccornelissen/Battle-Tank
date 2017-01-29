@@ -56,6 +56,44 @@ void ATankPlayerController::SetViewportAdjust(float Viewport)
 	fViewportAdjust = Viewport;
 }
 
+int32 ATankPlayerController::RedTeamNumber()
+{
+	int32 RedTanks = 0;
+
+	for (TActorIterator<ATank> TankItr(GetWorld()); TankItr; ++TankItr)
+	{
+		//Go through tanks in the world
+		if (TankItr)
+		{
+			if (TankItr->TankTeam == ETankTeam::TT_Red)
+			{
+				RedTanks++;
+			}
+		}
+	}
+
+	return RedTanks;
+}
+
+int32 ATankPlayerController::BlueTeamNumber()
+{
+	int32 BlueTanks = 0;
+
+	for (TActorIterator<ATank> TankItr(GetWorld()); TankItr; ++TankItr)
+	{
+		//Go through tanks in the world
+		if (TankItr)
+		{
+			if (TankItr->TankTeam == ETankTeam::TT_Blue)
+			{
+				BlueTanks++;
+			}
+		}
+	}
+
+	return BlueTanks;
+}
+
 void ATankPlayerController::OnDeath()
 {
 	FVector PawnLoc = GetPawn()->GetActorLocation();

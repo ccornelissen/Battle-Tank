@@ -39,7 +39,8 @@ private:
 
 	void Tick(float DeltaSeconds) override;
 
-	TArray<ATank*> EnemyTanks;
+	//Tracks remaing enemies on the field
+	int32 iEnemiesRemain = 0;
 
 	//Overriding to set up delegate when pawn get controlled
 	virtual void SetPawn(APawn* InPawn) override;

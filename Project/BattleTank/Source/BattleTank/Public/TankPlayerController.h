@@ -11,11 +11,11 @@ class UTankAimingComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathEvent); //To trigger events in blueprint on death 
 
 //Controls the owning team of the tank
-UENUM()
+UENUM(BlueprintType)
 enum class EPlayerTeam : uint8
 {
-	PT_Blue,
-	PT_Red
+	PT_Blue UMETA(DisplayName = "Blue"),
+	PT_Red UMETA(DisplayName = "Red")
 };
 
 /**
@@ -32,7 +32,16 @@ public:
 
 	void SetViewportAdjust(float Viewport);
 
+	UPROPERTY(BlueprintReadOnly, Category = "Team")
 	EPlayerTeam PlayerTeam = EPlayerTeam::PT_Blue;
+
+	//Returns the amount of tanks on the red team
+	UFUNCTION(BlueprintCallable, Category = "Team")
+	int32 RedTeamNumber();
+
+	//Returns the amount of tanks on the blue team
+	UFUNCTION(BlueprintCallable, Category = "Team")
+	int32 BlueTeamNumber();
 
 protected:
 	//Function that tells the UI when it is safe to set its components
@@ -49,6 +58,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	UParticleSystemComponent* DeathExplosion = nullptr;
+
+	//Hold team arrays for UI
+	TArray<ATank*> RedTeam;
+	TArray<ATank*> BlueTeam;
 
 	//Overriding to set up delegate when pawn get controlled
 	virtual void SetPawn(APawn* InPawn) override;
@@ -74,4 +87,5 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float fLineTraceRange = 1000000.0f;
+	
 };
