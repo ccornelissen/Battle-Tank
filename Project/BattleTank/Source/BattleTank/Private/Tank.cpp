@@ -31,6 +31,17 @@ float ATank::fGetHealthPercent() const
 	return (float)iCurrentHealth / (float)iTankHealth;
 }
 
+void ATank::SpawnDeathParticle()
+{
+	if (DeathParticleBlueprint)
+	{
+		FVector CurLoc = GetActorLocation();
+		FRotator CurRot = GetActorRotation();
+
+		AActor* DeathParticle = GetWorld()->SpawnActor<AActor>(DeathParticleBlueprint, CurLoc, CurRot);
+	}
+}
+
 void ATank::SetTeamColor(UMaterialInterface* Color)
 {
 	if (Color)

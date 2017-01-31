@@ -50,7 +50,7 @@ protected:
 
 	//Event to tell blueprint the user has died
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
-	void TankDeath(FVector Location, FRotator Rotation); 
+	void TankDeath(); 
 
 	UTankAimingComponent* AimComp = nullptr;
 

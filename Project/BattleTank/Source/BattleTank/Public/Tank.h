@@ -7,7 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
-UENUM()
+UENUM(BlueprintType)
 enum class ETankTeam : uint8
 {
 	TT_Blue,
@@ -30,7 +30,10 @@ public:
 	//Set color based on team
 	void SetTeamColor(UMaterialInterface* Color);
 
+	UPROPERTY(BlueprintReadOnly, Category = "Team")
 	ETankTeam TankTeam = ETankTeam::TT_Blue;
+
+	void SpawnDeathParticle();
 
 private:
 	// Sets default values for this pawn's properties
@@ -42,22 +45,15 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComp) override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<AActor> DeathParticleBlueprint;
+
 	//Called by the engine when the tank takes damage.
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 
 	//The amount of health the tanks have
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 iTankHealth = 100;
-
-	////Mesh references that have their color changed based on team 
-	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
-	//UStaticMeshComponent* BodyMesh = nullptr;
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
-	//UStaticMeshComponent* TurretMesh = nullptr;
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Tank Parts")
-	//UStaticMeshComponent* BarrelMesh = nullptr;
 
 	int32 iCurrentHealth;
 };

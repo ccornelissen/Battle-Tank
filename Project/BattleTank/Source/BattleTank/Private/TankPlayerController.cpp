@@ -96,10 +96,11 @@ int32 ATankPlayerController::BlueTeamNumber()
 
 void ATankPlayerController::OnDeath()
 {
-	FVector PawnLoc = GetPawn()->GetActorLocation();
-	FRotator PawnRot = GetPawn()->GetActorRotation();
+	TankDeath();
 
-	TankDeath(PawnLoc, PawnRot);
+	ATank* CurTank = Cast<ATank>(GetPawn());
+
+	CurTank->SpawnDeathParticle();
 
 	GetPawn()->Destroy();
 	

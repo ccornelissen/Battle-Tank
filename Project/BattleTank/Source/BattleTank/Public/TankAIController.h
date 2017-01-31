@@ -9,11 +9,12 @@ class UTankAimingComponent;
 class ATank;
 
 //Controls the owning team of the tank
-UENUM()
+UENUM(BlueprintType)
 enum class EAITeam : uint8
 {
 	AT_Blue,
-	AT_Red
+	AT_Red,
+	AT_Neutral
 };
 
 /**
@@ -27,13 +28,16 @@ class BATTLETANK_API ATankAIController : public AAIController
 
 public:
 
+	//These functions need to be public for the turret to access
+	UPROPERTY(BlueprintReadWrite, Category = "Team")
 	EAITeam AITeam = EAITeam::AT_Blue;
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void GetNearestTank();
 
 private:
 
 	void BeginPlay() override;
-
-	void GetNearestTank();
 
 	ATank* NearestTank = nullptr;
 

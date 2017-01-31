@@ -29,9 +29,7 @@ void ATankAIController::BeginPlay()
 
 void ATankAIController::GetNearestTank()
 {
-	float NearestDist;
-
-	NearestDist = 90000000000000000000000000000000000000.0f;
+	float NearestDist = 0.0f;
 	
 	if (AITeam == EAITeam::AT_Red) //Look for blue tanks
 	{
@@ -53,7 +51,12 @@ void ATankAIController::GetNearestTank()
 					float Dist = FVector::Dist(OurLoc, CurTankLoc);
 
 					//Update nearest tank if the current tank is closer
-					if (Dist < NearestDist)
+					if (NearestDist == 0.0f)
+					{
+						NearestDist = Dist;
+						NearestTank = *TankItr;
+					}
+					else if (Dist < NearestDist)
 					{
 						NearestDist = Dist;
 						NearestTank = *TankItr;
@@ -80,7 +83,12 @@ void ATankAIController::GetNearestTank()
 
 					float Dist = FVector::Dist(OurLoc, CurTankLoc);
 
-					if (Dist < NearestDist)
+					if (NearestDist == 0.0f)
+					{
+						NearestDist = Dist;
+						NearestTank = *TankItr;
+					}
+					else if (Dist < NearestDist)
 					{
 						NearestDist = Dist;
 						NearestTank = *TankItr;
