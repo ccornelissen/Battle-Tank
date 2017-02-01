@@ -34,6 +34,8 @@ void UTankAimingComponent::Initialize(UTankBarrel* Barrel, UTankTurret* Turret)
 	}
 
 	TankTurret = Turret;
+
+	iCurrentAmmo = iMaxAmmo;
 }
 
 //Sets the turret to aim at the hit location
@@ -79,7 +81,7 @@ void UTankAimingComponent::Fire()
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - fLastFireTime) > fTankReloadTimer;
 
 	//Checking the barrel and reload bool
-	if (ensure(TankBarrel) && bIsReloaded && iAmmo != 0)
+	if (ensure(TankBarrel) && bIsReloaded && iCurrentAmmo != 0)
 	{
 		//Creating projectile spawn variables
 		FVector SpawnLoc = TankBarrel->GetSocketLocation(FName("ProjectileLocation"));
@@ -95,7 +97,7 @@ void UTankAimingComponent::Fire()
 		}
 
 		//Take away an ammo
-		iAmmo--;
+		iCurrentAmmo--;
 
 		//Set the reload timer
 		fLastFireTime = GetWorld()->GetTimeSeconds();
@@ -111,14 +113,14 @@ float UTankAimingComponent::GetReloadTracker() const
 //Returns the ammount of ammo the tank has, currently used to update the UI
 int UTankAimingComponent::GetRoundsLeft() const
 {
-	return iAmmo;
+	return iCurrentAmmo;
 }
 
 
 //Function to control the reticle color, based off of what the player is aiming at
 void UTankAimingComponent::SetAimingState(FHitResult Hit)
 {
-	if (iAmmo == 0)
+	if (iCurrentAmmo == 0)
 	{
 		ReticleState = EReticleState::RS_Empty;
 		return;

@@ -31,6 +31,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
+	// Amount of ammo the tank has
+	int32 iCurrentAmmo = 10;
+
+	//Max ammo the tanks can have
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 iMaxAmmo = 10;
+
 	//Function that aims at the given location
 	void AimAt(FVector HitLocation);
 
@@ -77,11 +84,7 @@ private:
 	//Float that handles how often the tank can shoot
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float fTankReloadTimer = 3.0f;
-
-	//Amount of ammo the tank has
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int32 iAmmo = 5;
-
+	
 	//Reference to the tanks fired projectile setup in the blueprint
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<ATankProjectile> ProjectileBlueprint;
