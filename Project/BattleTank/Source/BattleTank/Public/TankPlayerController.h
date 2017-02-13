@@ -47,6 +47,10 @@ protected:
 	//Function that tells the UI when it is safe to set its components
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
+	
+	//Used to remove second player before returning to the main menu
+	UFUNCTION(BlueprintCallable, Category = "Clean Up")
+	void RemovePlayerTwo();
 
 	//Event to tell blueprint the user has died
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")

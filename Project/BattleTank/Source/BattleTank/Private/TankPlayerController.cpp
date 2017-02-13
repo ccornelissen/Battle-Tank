@@ -94,6 +94,34 @@ int32 ATankPlayerController::BlueTeamNumber()
 	return BlueTanks;
 }
 
+void ATankPlayerController::RemovePlayerTwo()
+{
+	const int iMaxSplitScreen = 1;
+	ULocalPlayer* PlayersToRemove[iMaxSplitScreen];
+	int iRemIndex = 0;
+
+	for (FConstPlayerControllerIterator Iterator = GEngine->GameViewport->GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		APlayerController* Controller = *Iterator;
+
+		if (Controller && Controller->IsLocalController() && !Controller->IsPrimaryPlayer())
+		{
+			ULocalPlayer* ExPlayer = Cast<ULocalPlayer>(Controller->Player);
+			if (ExPlayer)
+			{
+				PlayersToRemove[iRemIndex++] = ExPlayer;
+
+				Controller->PawnPendingDestroy(Controller->GetPawn());
+			}
+		}
+	}
+
+	for (int i = 0; i < iRemIndex; ++i)
+	{
+		GetGameInstance()->RemoveLocalPlayer(PlayersToRemove[i]);
+	}
+}
+
 void ATankPlayerController::OnDeath()
 {
 	TankDeath();
